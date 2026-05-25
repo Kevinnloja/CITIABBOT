@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Centro de Investigaciones CITIAB | Universidad Nacional de Loja</title>
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --unl-blue:       #003B70;
+      --unl-blue-dark:  #002550;
+      --unl-blue-mid:   #0f4c81;
+      --unl-blue-light: #1a6aad;
+      --unl-gold:       #c8a000;
+      --unl-light:      #f0f4f8;
+      --unl-white:      #fff;
+      --unl-border:     #ccd6e0;
+      --font-body:      'Open Sans', sans-serif;
+      --font-head:      'Merriweather', serif;
+    }
+
+    body { font-family: var(--font-body); font-size: 14px; color: #333; background: #fff; }
+    a { text-decoration: none; color: inherit; }
+
+    /* ── TOP BAR ── */
+    .topbar { background: var(--unl-blue-dark); color: #c5d8ee; font-size: 11.5px; padding: 5px 0; }
+    .topbar-inner { max-width: 1200px; margin: 0 auto; padding: 0 16px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+    .topbar a { color: #c5d8ee; padding: 2px 7px; border-radius: 3px; transition: background .2s; }
+    .topbar a:hover { background: rgba(255,255,255,.15); color: #fff; }
+
+    /* ── HEADER ── */
+    .header { background: var(--unl-white); border-bottom: 4px solid var(--unl-blue); padding: 10px 0; }
+    .header-inner { max-width: 1200px; margin: 0 auto; padding: 0 16px; display: flex; align-items: center; }
+    .header-logo img { height: 70px; }
+
+    /* ── NAV ── */
+    nav { background: var(--unl-blue); }
+    .nav-inner { max-width: 1200px; margin: 0 auto; display: flex; flex-wrap: wrap; }
+    .nav-item { position: relative; }
+    .nav-item > a { display: block; color: #fff; font-size: 13px; font-weight: 600; padding: 12px 15px; transition: background .2s; white-space: nowrap; }
+    .nav-item > a:hover, .nav-item:hover > a { background: var(--unl-blue-dark); }
+    .dropdown { display: none; position: absolute; top: 100%; left: 0; background: var(--unl-blue-dark); min-width: 240px; z-index: 99; box-shadow: 0 4px 12px rgba(0,0,0,.3); }
+    .nav-item:hover .dropdown { display: block; }
+    .dropdown a { display: block; color: #c5d8ee; font-size: 12.5px; padding: 9px 18px; border-bottom: 1px solid rgba(255,255,255,.08); transition: background .2s; }
+    .dropdown a:hover { background: var(--unl-blue-mid); color: #fff; }
+
+    /* ── HERO SLIDER ── */
+    .slider { position: relative; overflow: hidden; height: 360px; background: #000; }
+    .slide { position: absolute; inset: 0; opacity: 0; transition: opacity .8s ease-in-out; }
+    .slide.active { opacity: 1; }
+    .slide img { width: 100%; height: 100%; object-fit: cover; filter: brightness(.75); }
+    .slider-controls { position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; }
+    .dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,.5); cursor: pointer; transition: background .3s; }
+    .dot.active { background: #fff; }
+
+    /* ── BREADCRUMB ── */
+    .breadcrumb { background: var(--unl-light); border-bottom: 1px solid var(--unl-border); padding: 8px 0; font-size: 12.5px; }
+    .breadcrumb-inner { max-width: 1200px; margin: 0 auto; padding: 0 16px; }
+    .breadcrumb a { color: var(--unl-blue); }
+    .breadcrumb a:hover { text-decoration: underline; }
+    .breadcrumb span { color: #888; margin: 0 5px; }
+
+    /* ── MAIN LAYOUT ── */
+    .main { max-width: 1200px; margin: 0 auto; padding: 24px 16px; display: flex; gap: 26px; }
+    .sidebar { width: 220px; flex-shrink: 0; }
+    .content { flex: 1; min-width: 0; }
+
+    /* ── SIDEBAR ── */
+    .sidebar-logo { text-align: center; margin-bottom: 14px; }
+    .sidebar-logo img { max-width: 160px; }
+    .sidebar-img { width: 100%; border-radius: 4px; margin-bottom: 12px; border: 1px solid var(--unl-border); display: block; object-fit: cover; height: 120px; }
+    .sidebar-info-box { background: var(--unl-blue); color: #fff; border-radius: 4px; padding: 13px; font-size: 12.5px; line-height: 1.75; margin-bottom: 13px; }
+    .sidebar-info-box a { color: #a8ccee; }
+    .sidebar-info-box a:hover { color: #fff; }
+    .sidebar-info-box strong { display: block; margin-bottom: 5px; font-size: 13px; }
+    .sidebar-menu { border: 1px solid var(--unl-border); border-radius: 4px; overflow: hidden; margin-bottom: 16px; }
+    .sidebar-menu-title { background: var(--unl-blue); color: #fff; font-size: 13px; font-weight: 700; padding: 10px 14px; }
+    .sidebar-menu ul { list-style: none; }
+    .sidebar-menu li a { display: block; padding: 9px 14px; font-size: 12.5px; color: var(--unl-blue-dark); border-bottom: 1px solid var(--unl-border); transition: background .2s; }
+    .sidebar-menu li a:hover, .sidebar-menu li.active a { background: var(--unl-light); color: var(--unl-blue); font-weight: 600; }
+    .sidebar-menu li:last-child a { border-bottom: none; }
+
+    /* ── PAGE TITLE ── */
+    .page-title { font-family: var(--font-head); font-size: 24px; color: var(--unl-blue-dark); border-bottom: 3px solid var(--unl-blue); padding-bottom: 10px; margin-bottom: 20px; }
+
+    /* ── PHOTO BANNER ── */
+    .photo-banner { width: 100%; height: 250px; object-fit: cover; display: block; border-radius: 5px; margin-bottom: 20px; border: 2px solid var(--unl-border); }
+
+    /* ── STATS ── */
+    .stats-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin-bottom: 24px; }
+    .stat-card { background: var(--unl-blue); color: #fff; border-radius: 5px; padding: 16px 10px; text-align: center; }
+    .stat-card .num { font-size: 28px; font-weight: 700; line-height: 1; }
+    .stat-card .lbl { font-size: 11px; margin-top: 5px; opacity: .88; }
+
+    /* ── INTRO GRID ── */
+    .intro-grid { display: grid; grid-template-columns: 1fr 3px 1fr; gap: 0; border: 1px solid var(--unl-border); margin-bottom: 24px; border-radius: 4px; overflow: hidden; }
+    .intro-cell { padding: 18px; font-size: 13.5px; line-height: 1.75; }
+    .intro-divider { background: var(--unl-blue); }
+    .intro-cell h4 { font-size: 14px; font-weight: 700; color: var(--unl-blue-dark); margin-bottom: 8px; }
+
+    /* ── SECTION BLOCKS ── */
+    .section-block { margin-bottom: 22px; }
+    .section-block h5, .gallery-title, .map-section h5 {
+      font-size: 15px; font-weight: 700; color: var(--unl-blue-dark);
+      margin-bottom: 10px; padding-bottom: 4px;
+      border-bottom: 2px solid var(--unl-gold); display: inline-block;
+    }
+    .section-block p { font-size: 13.5px; line-height: 1.75; color: #444; }
+
+    /* ── CAMPOS ── */
+    .campos-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(175px,1fr)); gap: 10px; margin-top: 10px; }
+    .campo-tag { background: var(--unl-light); border-left: 4px solid var(--unl-blue); padding: 10px 13px; font-size: 13px; font-weight: 600; color: var(--unl-blue-dark); border-radius: 0 4px 4px 0; transition: background .2s, transform .2s; }
+    .campo-tag:hover { background: #d0e4f5; transform: translateX(3px); }
+
+    /* ── GALLERY ── */
+    .gallery-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-top: 10px; margin-bottom: 24px; }
+    .gallery-grid img { width: 100%; height: 145px; object-fit: cover; border-radius: 4px; border: 1px solid var(--unl-border); transition: transform .25s, box-shadow .25s; cursor: pointer; }
+    .gallery-grid img:hover { transform: scale(1.04); box-shadow: 0 6px 18px rgba(0,0,0,.18); }
+
+    /* ── MAP ── */
+    .map-section { margin-bottom: 26px; }
+    .map-section iframe { width: 100%; height: 270px; border: 2px solid var(--unl-border); border-radius: 5px; margin-top: 10px; }
+
+    /* ── COOPERANTES ── */
+    .cooperantes-title { background: var(--unl-blue); color: #fff; padding: 10px 16px; font-size: 14px; font-weight: 700; border-radius: 4px 4px 0 0; }
+    .cooperantes-grid { display: flex; flex-wrap: wrap; gap: 10px; padding: 16px; border: 1px solid var(--unl-border); border-top: none; background: var(--unl-light); border-radius: 0 0 4px 4px; }
+    .cooperante-card { width: 100px; height: 70px; background: #fff; border: 1px solid var(--unl-border); border-radius: 4px; display: flex; align-items: center; justify-content: center; overflow: hidden; transition: box-shadow .2s, transform .2s; }
+    .cooperante-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,.14); transform: translateY(-2px); }
+    .cooperante-card img { max-width: 90%; max-height: 58px; object-fit: contain; }
+
+    /* ── FOOTER ── */
+    footer { background: var(--unl-blue-dark); color: #c5d8ee; margin-top: 44px; }
+    .footer-main { max-width: 1200px; margin: 0 auto; padding: 26px 16px; display: flex; flex-wrap: wrap; gap: 32px; align-items: flex-start; }
+    .footer-logo img { height: 58px; filter: brightness(0) invert(1); margin-bottom: 12px; }
+    .footer-info { font-size: 13px; line-height: 1.9; }
+    .footer-info a { color: #90bbdd; }
+    .footer-info a:hover { color: #fff; }
+    .footer-bottom { border-top: 1px solid rgba(255,255,255,.15); padding: 11px 16px; text-align: center; font-size: 12px; color: #8ab4cc; }
+    .footer-social { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+    .social-btn { background: rgba(255,255,255,.12); color: #fff; padding: 6px 13px; border-radius: 3px; font-size: 12px; transition: background .2s; }
+    .social-btn:hover { background: rgba(255,255,255,.25); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .main { flex-direction: column; }
+      .sidebar { width: 100%; }
+      .intro-grid { grid-template-columns: 1fr; }
+      .intro-divider { height: 3px; width: 100%; }
+      .slider { height: 200px; }
+      .stats-row { grid-template-columns: repeat(2,1fr); }
+      .gallery-grid { grid-template-columns: repeat(2,1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="topbar-inner">
+    <a href="https://www.openstreetmap.org/?mlat=-4.03364&mlon=-79.20311#map=19/-4.03364/-79.20311" target="_blank">&#128205; Mapa</a>
+    <a href="https://www.unl.edu.ec/acceso-pcd">Acceso PCD</a>
+    <a href="https://sac.unl.edu.ec">SAC</a>
+    <a href="https://estudiantes.unl.edu.ec/">SGA Estudiantes</a>
+    <a href="https://sidoc.unl.edu.ec/">SIDOC</a>
+    <a href="https://siaaf.unl.edu.ec/">SIAAF</a>
+    <a href="https://docentes.unl.edu.ec/">SGA Docentes</a>
+    <a href="https://eva.unl.edu.ec/">EVA</a>
+    <a href="https://elsa.unl.edu.ec">ELSA</a>
+    <a href="https://mail.google.com/a/unl.edu.ec">Correo Institucional</a>
+    <a href="https://unl.edu.ec/gaceta">Gaceta Oficial UNL</a>
+    <a href="https://www.unl.edu.ec/contactenos">Cont&#225;ctenos</a>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-inner">
+    <a class="header-logo" href="https://www.unl.edu.ec/">
+      <img src="https://www.unl.edu.ec/sites/default/files/inline-images/logo_0.png" alt="Universidad Nacional de Loja" />
+    </a>
+  </div>
+</header>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <div class="nav-item">
+      <a href="https://www.unl.edu.ec/universidad">Universidad &#9662;</a>
+      <div class="dropdown">
+        <a href="https://www.unl.edu.ec/autoridades">Autoridades</a>
+        <a href="https://www.unl.edu.ec/universidad/ocs">&#211;rgano Colegiado Superior</a>
+        <a href="https://www.unl.edu.ec/universidad">Nosotros</a>
+        <a href="https://www.unl.edu.ec/normativa">Normativa</a>
+        <a href="https://www.unl.edu.ec/cooperacioninternacional">Cooperaci&#243;n Internacional</a>
+        <a href="https://www.unl.edu.ec/formatos">Formatos</a>
+        <a href="https://www.unl.edu.ec/preguntas-frecuentes">Preguntas Frecuentes</a>
+      </div>
+    </div>
+    <div class="nav-item"><a href="https://www.unl.edu.ec/admisiones">Admisiones</a></div>
+    <div class="nav-item">
+      <a href="https://www.unl.edu.ec/oferta">Oferta Acad&#233;mica &#9662;</a>
+      <div class="dropdown">
+        <a href="https://www.unl.edu.ec/oferta-academica">Oferta de Grado</a>
+        <a href="https://www.unl.edu.ec/posgrados">Oferta de Posgrado</a>
+        <a href="https://www.unl.edu.ec/instituto-de-idiomas">Instituto de Idiomas</a>
+        <a href="https://www.unl.edu.ec/vinculacion-con-la-sociedad/educacion-continua">Educaci&#243;n Cont&#237;nua</a>
+      </div>
+    </div>
+    <div class="nav-item">
+      <a href="https://www.unl.edu.ec/investigacion">Investigaci&#243;n &#9662;</a>
+      <div class="dropdown">
+        <a href="https://www.unl.edu.ec/investigacion/lineas-investigacion">L&#237;neas de Investigaci&#243;n</a>
+        <a href="https://www.unl.edu.ec/investigacion/programas-investigacion">Programas de Investigaci&#243;n</a>
+        <a href="https://www.unl.edu.ec/investigacion/centros-laboratorios-de-investigacion">Centros y Laboratorios</a>
+        <a href="https://www.unl.edu.ec/investigacion/grupos-investigacion">Grupos de Investigaci&#243;n</a>
+        <a href="https://www.unl.edu.ec/investigacion/produccioncientifica">Producci&#243;n Cient&#237;fica</a>
+      </div>
+    </div>
+    <div class="nav-item">
+      <a href="https://www.unl.edu.ec/vinculacion-con-la-sociedad">Vinculaci&#243;n &#9662;</a>
+      <div class="dropdown">
+        <a href="https://alumni.unl.edu.ec">Alumni</a>
+        <a href="https://www.unl.edu.ec/vinculacion-con-la-sociedad/convenios">Convenios</a>
+        <a href="https://www.unl.edu.ec/vinculacion-con-la-sociedad/proyectos">Proyectos de Vinculaci&#243;n</a>
+      </div>
+    </div>
+    <div class="nav-item">
+      <a href="https://www.unl.edu.ec/docencia">Docencia &#9662;</a>
+      <div class="dropdown">
+        <a href="https://unl.edu.ec/universidad/calendario-academico">Calendario Acad&#233;mico</a>
+        <a href="https://www.unl.edu.ec/requisitos-de-matricula">Requisitos de Matr&#237;cula</a>
+      </div>
+    </div>
+    <div class="nav-item">
+      <a href="https://www.unl.edu.ec/bienestar">Comunidad &#9662;</a>
+      <div class="dropdown">
+        <a href="https://www.unl.edu.ec/bienestar">Bienestar Universitario</a>
+        <a href="https://www.unl.edu.ec/servicios">Servicios</a>
+        <a href="https://www.unl.edu.ec/universidad/biblioteca-virtual">Biblioteca Virtual</a>
+      </div>
+    </div>
+    <div class="nav-item">
+      <a href="https://www.unl.edu.ec/universidad/transparencias">Transparencia &#9662;</a>
+      <div class="dropdown">
+        <a href="https://unl.edu.ec/elecciones2025">Elecciones 2025</a>
+        <a href="https://unl.edu.ec/universidad/transparencias">LOTAIP</a>
+        <a href="https://www.unl.edu.ec/rendicion_cuentas">Rendici&#243;n de Cuentas</a>
+      </div>
+    </div>
+    <div class="nav-item">
+      <a href="#">Editorial UNL &#9662;</a>
+      <div class="dropdown">
+        <a href="https://revistas.unl.edu.ec/">Revistas</a>
+        <a href="https://www.unl.edu.ec/investigacion/produccioncientifica">Libros</a>
+        <a href="https://libros.unl.edu.ec">Sistema Editorial - OMP</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO SLIDER -->
+<div class="slider" id="slider">
+  <div class="slide active">
+    <img src="https://www.unl.edu.ec/sites/default/files/styles/1900x500/public/slider/principal/2023-05/slide01_0.jpg" alt="Equipo CITIAB" />
+  </div>
+  <div class="slide">
+    <img src="https://www.unl.edu.ec/sites/default/files/styles/1900x500/public/slider/principal/2024-04/slide01_1.jpg" alt="Slide 1" />
+  </div>
+  <div class="slide">
+    <img src="https://www.unl.edu.ec/sites/default/files/styles/1900x500/public/slider/principal/2024-04/slide02_1.jpg" alt="Slide 2" />
+  </div>
+  <div class="slide">
+    <img src="https://www.unl.edu.ec/sites/default/files/styles/1900x500/public/slider/principal/2024-04/slide03v3.png" alt="Slide 3" />
+  </div>
+  <div class="slider-controls">
+    <div class="dot active" onclick="goSlide(0)"></div>
+    <div class="dot" onclick="goSlide(1)"></div>
+    <div class="dot" onclick="goSlide(2)"></div>
+    <div class="dot" onclick="goSlide(3)"></div>
+  </div>
+</div>
+
+<!-- BREADCRUMB -->
+<div class="breadcrumb">
+  <div class="breadcrumb-inner">
+    <a href="https://www.unl.edu.ec/">Inicio</a>
+    <span>&#8250;</span>
+    Centro de Investigaciones CITIAB
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <img src="https://www.unl.edu.ec/sites/default/files/inline-images/logo%20citiab%202%20%281%29.png" alt="Logo CITIAB" />
+    </div>
+
+    <img class="sidebar-img" src="https://www.unl.edu.ec/sites/default/files/styles/1900x500/public/slider/principal/2023-05/slide01_0.jpg" alt="Equipo CITIAB" />
+
+    <div class="sidebar-info-box">
+      <strong>&#128205; Ubicaci&#243;n</strong>
+      Ciudad Universitaria Guillermo Falco&#241;i<br/>Loja &#8211; Ecuador<br/>
+      <a href="https://www.openstreetmap.org/?mlat=-4.03364&mlon=-79.20311#map=17" target="_blank">Ver en el mapa &#8594;</a>
+    </div>
+
+    <img class="sidebar-img" src="https://www.unl.edu.ec/sites/default/files/styles/1900x500/public/slider/principal/2024-04/slide02_1.jpg" alt="Investigaci&#243;n CITIAB" />
+
+    <div class="sidebar-info-box">
+      <strong>&#128222; Contacto</strong>
+      Tel: 07 2593550<br/>
+      <a href="mailto:comunicacion@unl.edu.ec">comunicacion@unl.edu.ec</a><br/>
+      <a href="https://www.unl.edu.ec/citiab/contactenos">Formulario de contacto &#8594;</a>
+    </div>
+
+    <div class="sidebar-menu">
+      <div class="sidebar-menu-title">CITIAB</div>
+      <ul>
+        <li class="active"><a href="https://www.unl.edu.ec/citiab">Con&#243;cenos</a></li>
+        <li><a href="https://www.unl.edu.ec/citiab/nosotros">Equipo de Investigadores</a></li>
+        <li><a href="https://www.unl.edu.ec/citiab/proyectos">Proyectos de Investigaci&#243;n</a></li>
+        <li><a href="https://www.unl.edu.ec/citiab/articulos">Producci&#243;n Cient&#237;fica</a></li>
+        <li><a href="https://www.unl.edu.ec/citiab/bases-de-datos">Bases de Datos</a></li>
+        <li><a href="https://www.unl.edu.ec/citiab/redes-de-investigacion">Redes de Investigaci&#243;n</a></li>
+        <li><a href="https://www.unl.edu.ec/citiab/contactenos">Cont&#225;ctenos</a></li>
+      </ul>
+    </div>
+  </aside>
+
+  <!-- CONTENT -->
+  <main class="content">
+    <h1 class="page-title">Centro de Investigaciones CITIAB</h1>
+
+    <!-- FOTO BANNER -->
+    <img class="photo-banner"
+      src="https://www.unl.edu.ec/sites/default/files/styles/1900x500/public/slider/principal/2024-04/slide03v3.png"
+      alt="CITIAB &#8211; Zona Sur del Ecuador" />
+
+    <!-- ESTADÍSTICAS -->
+    <div class="stats-row">
+      <div class="stat-card"><div class="num">8</div><div class="lbl">Campos de investigaci&#243;n</div></div>
+      <div class="stat-card"><div class="num">39</div><div class="lbl">Cantones de intervenci&#243;n</div></div>
+      <div class="stat-card"><div class="num">19+</div><div class="lbl">Instituciones cooperantes</div></div>
+      <div class="stat-card"><div class="num">3</div><div class="lbl">Provincias &#8211; Zona Sur</div></div>
+    </div>
+
+    <!-- INTRO GRID -->
+    <div class="intro-grid">
+      <div class="intro-cell">
+        El <strong>Centro de Investigaciones Tropicales del Ambiente y Biodiversidad (CITIAB)</strong>, surge con la finalidad de investigar tem&#225;ticas sobre biodiversidad, restauraci&#243;n de paisajes, servicios ecosist&#233;micos, hidrolog&#237;a, cambio clim&#225;tico, con el objetivo de generar conocimiento que beneficie a la sociedad, as&#237; como construir escenarios para el mejoramiento de los procesos de ense&#241;anza de pre y post grado en la Universidad Nacional de Loja.
+      </div>
+      <div class="intro-divider"></div>
+      <div class="intro-cell">
+        <h4>&#193;rea de intervenci&#243;n</h4>
+        El escenario geogr&#225;fico de intervenci&#243;n del CITIAB es la Zona de Planificaci&#243;n Siete ubicada en la Regi&#243;n Sur del Ecuador. Esta zona representa aproximadamente el 11% (27.535 km&#178;) de la superficie del territorio nacional, conformada por las provincias de Loja, El Oro y Zamora Chinchipe, con un total de 39 cantones y 155 parroquias.
+      </div>
+    </div>
+
+    <!-- VISIÓN -->
+    <div class="section-block">
+      <h5>Visi&#243;n</h5>
+      <p>El Centro de Investigaciones Tropicales del Ambiente y Biodiversidad (CITIAB), en relaci&#243;n a su proyecci&#243;n futura ser&#225; un espacio regional pionero en desarrollar investigaci&#243;n cient&#237;fica y transferencia de tecnolog&#237;a, reconocido nacional e internacionalmente como entidad que genera y suministra informaci&#243;n del ambiente, la biodiversidad, los servicios ecosist&#233;micos y de los sistemas agropecuarios. CITIAB contribuir&#225; a mejorar los procesos de ense&#241;anza-aprendizaje en la Universidad Nacional de Loja y aportar&#225; con evidencia cient&#237;fica para la definici&#243;n de pol&#237;ticas p&#250;blicas y la toma de decisiones relacionadas con el buen vivir y la gesti&#243;n de los recursos naturales renovables ante un clima cambiante.</p>
+    </div>
+
+    <!-- MISIÓN -->
+    <div class="section-block">
+      <h5>Misi&#243;n</h5>
+      <p>Promover, coordinar y realizar investigaci&#243;n que contribuya a la documentaci&#243;n del conocimiento para la conservaci&#243;n y el uso sostenible del ambiente, la biodiversidad, los servicios ecosist&#233;micos y los sistemas agropecuarios como factores claves del desarrollo y bienestar de la poblaci&#243;n de la regi&#243;n sur del Ecuador. Crear escenarios para vincular procesos de investigaci&#243;n, ense&#241;anza y aprendizaje, donde se articule efectivamente la informaci&#243;n generada con la oferta acad&#233;mica de la Universidad Nacional de Loja y la demanda de la sociedad ecuatoriana, a trav&#233;s de un trabajo cooperativo de redes locales, nacionales e internacionales y la incidencia en la toma de decisiones y en las pol&#237;ticas p&#250;blicas.</p>
+    </div>
+
+    <!-- CAMPOS -->
+    <div class="section-block">
+      <h5>Campos de investigaci&#243;n</h5>
+      <div class="campos-grid">
+        <div class="campo-tag">Biodiversidad</div>
+        <div class="campo-tag">Cambio clim&#225;tico</div>
+        <div class="campo-tag">Bienes y servicios ecosist&#233;micos</div>
+        <div class="campo-tag">Manejo forestal sostenible</div>
+        <div class="campo-tag">Restauraci&#243;n de paisajes</div>
+        <div class="campo-tag">Calidad ambiental</div>
+        <div class="campo-tag">Sistemas agropecuarios</div>
+        <div class="campo-tag">Recursos h&#237;dricos</div>
+      </div>
+    </div>
+
+    <!-- GALERÍA -->
+    <div class="section-block">
+      <div class="gallery-title">Galer&#237;a &#8211; Trabajo de Campo</div>
+      <div class="gallery-grid">
+        <img src="https://www.unl.edu.ec/sites/default/files/styles/1900x500/public/slider/principal/2023-05/slide01_0.jpg" alt="Equipo CITIAB en campo" />
+        <img src="https://www.unl.edu.ec/sites/default/files/styles/1900x500/public/slider/principal/2024-04/slide01_1.jpg" alt="Investigaci&#243;n" />
+        <img src="https://www.unl.edu.ec/sites/default/files/styles/1900x500/public/slider/principal/2024-04/slide02_1.jpg" alt="Biodiversidad" />
+        <img src="https://www.unl.edu.ec/sites/default/files/styles/1900x500/public/slider/principal/2024-04/slide03v3.png" alt="Ecosistemas" />
+        <img src="https://www.unl.edu.ec/sites/default/files/styles/1900x500/public/slider/principal/2023-05/slide01_0.jpg" alt="Investigadores UNL" />
+        <img src="https://www.unl.edu.ec/sites/default/files/styles/1900x500/public/slider/principal/2024-04/slide01_1.jpg" alt="Campo &#8211; Zona Sur" />
+      </div>
+    </div>
+
+    <!-- MAPA -->
+    <div class="map-section section-block">
+      <h5>&#193;rea Geogr&#225;fica de Intervenci&#243;n</h5>
+      <iframe
+        src="https://www.openstreetmap.org/export/embed.html?bbox=-80.5,-5.2,-78.2,-3.2&layer=mapnik&marker=-4.03364,-79.20311"
+        title="Zona de intervenci&#243;n CITIAB" loading="lazy">
+      </iframe>
+    </div>
+
+    <!-- COOPERANTES -->
+    <div>
+      <div class="cooperantes-title">Instituciones Cooperantes</div>
+      <div class="cooperantes-grid">
+        <a class="cooperante-card" href="https://www.enabel.be/" target="_blank"><img src="https://www.unl.edu.ec/sites/default/files/styles/carrusel_convenio_posgrados_400x325_/public/carrusel/2023/05/1%20.Cooperacion%20Belga.jpg" alt="Cooperaci&#243;n Belga" /></a>
+        <a class="cooperante-card" href="https://joinforwater.ngo/en/where-we-operate/ecuador-peru/" target="_blank"><img src="https://www.unl.edu.ec/sites/default/files/styles/carrusel_convenio_posgrados_400x325_/public/carrusel/2023/05/2.%20Join%20For%20Water_1.jpg" alt="Join For Water" /></a>
+        <a class="cooperante-card" href="https://twitter.com/Protos_Andes" target="_blank"><img src="https://www.unl.edu.ec/sites/default/files/styles/carrusel_convenio_posgrados_400x325_/public/carrusel/2023/05/3.%20Protos%20Andes.jpeg" alt="Protos Andes" /></a>
+        <a class="cooperante-card" href="https://www.natureandculture.org/es/" target="_blank"><img src="https://www.unl.edu.ec/sites/default/files/styles/carrusel_convenio_posgrados_400x325_/public/carrusel/2023/05/4.%20Naturaleza%20y%20cultura%20Internacional.png" alt="Naturaleza y Cultura" /></a>
+        <a class="cooperante-card" href="https://www.ambiente.gob.ec/" target="_blank"><img src="https://www.unl.edu.ec/sites/default/files/styles/carrusel_convenio_posgrados_400x325_/public/carrusel/2023/05/5.%20ministerio.png" alt="Ministerio del Ambiente" /></a>
+        <a class="cooperante-card" href="https://redgloria.condesan.org/" target="_blank"><img src="https://www.unl.edu.ec/sites/default/files/styles/carrusel_convenio_posgrados_400x325_/public/carrusel/2023/05/7Reg%20gloria%20Andes.jpeg" alt="Red Gloria Andes" /></a>
+        <a class="cooperante-card" href="https://www.inamhi.gob.ec/" target="_blank"><img src="https://www.unl.edu.ec/sites/default/files/styles/carrusel_convenio_posgrados_400x325_/public/carrusel/2023/05/8.Inamhi.jpeg" alt="INAMHI" /></a>
+        <a class="cooperante-card" href="https://www.thuenen.de/en/" target="_blank"><img src="https://www.unl.edu.ec/sites/default/files/styles/carrusel_convenio_posgrados_400x325_/public/carrusel/2023/05/9Thunen%20university%20Logo.jpeg" alt="Thunen University" /></a>
+        <a class="cooperante-card" href="https://www.ku.edu/" target="_blank"><img src="https://www.unl.edu.ec/sites/default/files/styles/carrusel_convenio_posgrados_400x325_/public/carrusel/2023/05/10%20kansas.png" alt="University of Kansas" /></a>
+        <a class="cooperante-card" href="https://condesan.org/" target="_blank"><img src="https://www.unl.edu.ec/sites/default/files/styles/carrusel_convenio_posgrados_400x325_/public/carrusel/2023/05/11CONDENSAN.jpeg" alt="CONDESAN" /></a>
+        <a class="cooperante-card" href="https://www.catie.ac.cr/" target="_blank"><img src="https://www.unl.edu.ec/sites/default/files/styles/carrusel_convenio_posgrados_400x325_/public/carrusel/2023/05/12%20CATIE.jpeg" alt="CATIE" /></a>
+        <a class="cooperante-card" href="https://www.giz.de/en/" target="_blank"><img src="https://www.unl.edu.ec/sites/default/files/styles/carrusel_convenio_posgrados_400x325_/public/carrusel/2023/05/15%20GIZ_0.jpeg" alt="GIZ" /></a>
+        <a class="cooperante-card" href="https://www.uazuay.edu.ec/" target="_blank"><img src="https://www.unl.edu.ec/sites/default/files/styles/carrusel_convenio_posgrados_400x325_/public/carrusel/2023/05/16%20Universidad%20del%20Azuay.jpeg" alt="Universidad del Azuay" /></a>
+        <a class="cooperante-card" href="https://redbosques.condesan.org/" target="_blank"><img src="https://www.unl.edu.ec/sites/default/files/styles/carrusel_convenio_posgrados_400x325_/public/carrusel/2023/05/17%20RED%20DE%20BOSQUES%20ANDINOS.jpeg" alt="Red Bosques Andinos" /></a>
+        <a class="cooperante-card" href="https://imhea.org/" target="_blank"><img src="https://www.unl.edu.ec/sites/default/files/styles/carrusel_convenio_posgrados_400x325_/public/carrusel/2023/05/18%20IMHEA.jpeg" alt="IMHEA" /></a>
+        <a class="cooperante-card" href="https://www.agricultura.gob.ec/" target="_blank"><img src="https://www.unl.edu.ec/sites/default/files/styles/carrusel_convenio_posgrados_400x325_/public/carrusel/2023/05/19%20MAG.jpeg" alt="MAG" /></a>
+        <a class="cooperante-card" href="https://atuk.com.ec/" target="_blank"><img src="https://www.unl.edu.ec/sites/default/files/styles/carrusel_convenio_posgrados_400x325_/public/carrusel/2023/05/20%20ATUK.jpeg" alt="ATUK" /></a>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-main">
+    <div>
+      <div class="footer-logo">
+        <img src="https://www.unl.edu.ec/sites/default/files/inline-images/logo_v2_0.png" alt="Logo UNL" />
+      </div>
+      <div class="footer-info">
+        <strong>Ciudad Universitaria Guillermo Falco&#241;i - Loja - Ecuador</strong><br />
+        &#128222; <strong>07 2593550</strong> (Opci&#243;n 1 - Presencial)<br />
+        &#128222; <strong>07 2593550</strong> (Opci&#243;n 2 - Distancia)<br />
+        &#9993; <a href="mailto:comunicacion@unl.edu.ec">comunicacion@unl.edu.ec</a><br />
+        <a href="https://www.openstreetmap.org/?mlat=-4.03364&mlon=-79.20311#map=17" target="_blank">&#128205; Ver ubicaci&#243;n en el mapa</a><br />
+        <a href="https://www.unl.edu.ec/sitemap">&#128506; Mapa del sitio</a>
+      </div>
+      <div class="footer-social">
+        <a class="social-btn" href="https://www.facebook.com/UNLoficial/" target="_blank">Facebook</a>
+        <a class="social-btn" href="https://www.instagram.com/unloficial/" target="_blank">Instagram</a>
+        <a class="social-btn" href="https://twitter.com/UNLoficial" target="_blank">Twitter/X</a>
+        <a class="social-btn" href="https://www.youtube.com/channel/UCXMwpCdZV7QHdKBuFk3QeUw" target="_blank">YouTube</a>
+        <a class="social-btn" href="https://www.linkedin.com/school/universidad-nacional-de-loja/" target="_blank">LinkedIn</a>
+        <a class="social-btn" href="https://www.tiktok.com/@unloficial" target="_blank">TikTok</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    &#169; 2025. Todos los derechos reservados. Universidad Nacional de Loja
+  </div>
+</footer>
+
+<script>
+  let current = 0;
+  const slides = document.querySelectorAll('.slide');
+  const dots   = document.querySelectorAll('.dot');
+  function goSlide(n) {
+    slides[current].classList.remove('active'); dots[current].classList.remove('active');
+    current = n;
+    slides[current].classList.add('active'); dots[current].classList.add('active');
+  }
+  setInterval(() => goSlide((current + 1) % slides.length), 4500);
+</script>
+
+<!-- CHATBOT CITIAB -->
+<script>
+(function(){if(!window.chatbase||window.chatbase("getState")!=="initialized"){window.chatbase=(...arguments)=>{if(!window.chatbase.q){window.chatbase.q=[]}window.chatbase.q.push(arguments)};window.chatbase=new Proxy(window.chatbase,{get(target,prop){if(prop==="q"){return target.q}return(...args)=>target(prop,...args)}})}const onLoad=function(){const script=document.createElement("script");script.src="https://www.chatbase.co/embed.min.js";script.id="PzrpKLRiYSw47uApJsODr";script.domain="www.chatbase.co";document.body.appendChild(script)};if(document.readyState==="complete"){onLoad()}else{window.addEventListener("load",onLoad)}})();
+</script>
+</body>
+</html>
